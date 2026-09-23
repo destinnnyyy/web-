@@ -105,18 +105,32 @@
 
     </form>
     <script>
-        document.getElementById("myForm").addEventListener("submit", function (e) {
+    document.getElementById("birthdate").max = new Date().toISOString().split('T')[0];
+
+    document.getElementById("myForm").addEventListener("submit", function (e) {
         const langs = document.querySelectorAll('input[name="lang[]"]:checked');
         const langErr = document.getElementById("lang-error");
 
         if (langs.length === 0) {
-        langErr.style.display = "inline";
-        e.preventDefault();
+            langErr.style.display = "inline";
+            e.preventDefault();
+            return;
         } else {
-        langErr.style.display = "none";
+            langErr.style.display = "none";
         }
-        });
-    </script>
+
+        const bd = document.getElementById("birthdate");
+        const today = new Date().toISOString().split('T')[0];
+        if (bd.value > today) {
+            bd.setCustomValidity("Дата рождения не может быть в будущем");
+            bd.reportValidity();
+            e.preventDefault();
+            return;
+        } else {
+            bd.setCustomValidity("");
+        }
+    });
+</script>
 
 </body>
 </html>
